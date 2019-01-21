@@ -2,16 +2,15 @@
   <div>
     {{ msg }}
     <form>
-      <button>ADD TASK</button>
+      <button v-on:click="addTodo()">ADD TASK</button>
       <button>DELETE FINISHED TASKS</button>
-      <p>input: <input type="text"></p>
-      <p>task:</p>
+      <p>input: <input type="text" v-model="newTodo"></p>
+      <p>task:{{ newTodo }}</p>
     </form>
     <div class="task-list">
-      <label class="task-list__item"><input type="checkbox"><button>EDIT</button>vue-router</label>
-      <label class="task-list__item"><input type="checkbox"><button>EDIT</button>vuex</label>
-      <label class="task-list__item"><input type="checkbox"><button>EDIT</button>vue-loader</label>
-      <label class="task-list__item--checked"><input type="checkbox"><button>EDIT</button>awesome-vue</label>
+      <label class="task-list__item" v-for="todo in todos">
+        <input type="checkbox"><button>EDIT</button>{{ todo.text }}
+      </label>
     </div>
   </div>
 </template>
@@ -19,10 +18,30 @@
 <script>
 export default {
   name: 'HelloWorld',
-  data () {
+  data: function() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      todos : [
+        { text: 'vue-router', done: false },
+        { text: 'vuex', done: false },
+        { text: 'vue-loader', done: false },
+        { text: 'awesome-vue', done: true },
+      ],
+      newTodo: ""
     }
+  },
+  methods: {
+    addTodo: function(event) {
+      let text = this.newTodo && this.newTodo.trim()
+      if (!text) {
+        return
+      }
+      this.todos.push({
+        text: text,
+        done: false
+      })
+      this.newTodo = ''
+    },
   }
 }
 </script>
